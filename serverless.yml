@@ -1,0 +1,38 @@
+service: wzlinx-image-resizing
+
+provider:
+  name: aws
+  runtime: python2.7
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: '*'
+
+functions:
+  resize:
+    handler: handler.call
+    environment:
+      BUCKET: wzlinux-resized-images
+      REGION: us-east-1
+    events:
+      - http:
+          path: /{size}/{image}
+          method: get
+
+resources:
+  Resources:
+    ResizedImages:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: wzlinux-resized-images
+
+plugins:
+  - serverless-s3-local
+  - serverless-offline
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: "non-linux"
