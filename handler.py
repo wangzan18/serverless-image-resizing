@@ -8,8 +8,7 @@ from PIL import Image
 
 
 def resized_image_url(resized_key, bucket, region):
-    return "https://s3-{region}.amazonaws.com/{bucket}/{resized_key}".format(
-        bucket=bucket, region=region, resized_key=resized_key
+    return "http://{bucket}.s3.{region}.amazonaws.com/{resized_key}".format(bucket=bucket, region=region, resized_key=resized_key
     )
 
 def resize_image(bucket_name, key, size):
